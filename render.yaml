@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: edusync
+    runtime: python
+    rootDirectory: EduSync-1-FIN_PROTO/EduSync
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn EduSync.wsgi:application"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: edusync_db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: 4
+      - key: DEBUG
+        value: "False"
+
+databases:
+  - name: edusync_db
+    plan: free
