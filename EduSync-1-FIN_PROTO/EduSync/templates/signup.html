@@ -1,0 +1,291 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+  .auth-wrapper {
+    min-height: 85vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 2rem 1rem;
+  }
+
+  .auth-bg-blob {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: var(--clr-accent);
+    filter: blur(140px);
+    opacity: 0.15;
+    border-radius: 50%;
+    z-index: -1;
+  }
+
+  .blob-l {
+    top: -100px;
+    left: -100px;
+    background: var(--clr-accent);
+  }
+
+  .blob-r {
+    bottom: -100px;
+    right: -100px;
+    background: var(--clr-success);
+    opacity: 0.1;
+  }
+
+  .auth-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid var(--clr-surface-alt);
+    padding: 3rem 2.5rem;
+    border-radius: 24px;
+    width: 100%;
+    max-width: 500px;
+    /* Slightly wider for signup */
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  [data-bs-theme="dark"] .auth-card {
+    background: rgba(30, 41, 59, 0.6);
+    border-color: rgba(255, 255, 255, 0.05);
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .auth-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .auth-title {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.5px;
+  }
+
+  .auth-sub {
+    font-size: 0.95rem;
+    color: var(--clr-text-muted);
+  }
+
+  .form-group {
+    margin-bottom: 1.25rem;
+  }
+
+  .form-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--clr-text);
+    margin-bottom: 0.4rem;
+    display: block;
+  }
+
+  .form-control {
+    background: var(--clr-bg);
+    border: 1px solid var(--clr-border);
+    padding: 0.85rem 1rem;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+    width: 100%;
+    color: var(--clr-text);
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: var(--clr-accent);
+    box-shadow: 0 0 0 4px var(--clr-accent-soft);
+    background: var(--clr-surface);
+  }
+
+  .btn-auth {
+    width: 100%;
+    padding: 0.9rem;
+    background: var(--clr-accent);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.2s;
+    margin-top: 1rem;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+    cursor: pointer;
+  }
+
+  .btn-auth:hover {
+    background: var(--clr-accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.35);
+  }
+
+  .btn-auth:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+  .auth-footer {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+    color: var(--clr-text-muted);
+  }
+
+  .auth-footer a {
+    color: var(--clr-accent);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .auth-footer a:hover {
+    text-decoration: underline;
+  }
+
+  .back-btn {
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--clr-surface);
+    border: 1px solid var(--clr-border);
+    color: var(--clr-text-muted);
+    transition: 0.2s;
+    text-decoration: none;
+  }
+
+  .back-btn:hover {
+    color: var(--clr-accent);
+    border-color: var(--clr-accent);
+  }
+
+  /* Input Icon Wrapper */
+  .input-wrapper {
+    position: relative;
+  }
+
+  .input-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--clr-text-muted);
+    font-size: 1rem;
+    pointer-events: none;
+  }
+
+  .form-control.has-icon {
+    padding-left: 2.8rem;
+  }
+</style>
+
+<div class="auth-wrapper">
+  <div class="auth-bg-blob blob-l"></div>
+  <div class="auth-bg-blob blob-r"></div>
+
+  <div class="auth-card">
+    <a href="/" class="back-btn" title="Back to Home">←</a>
+
+    <div class="auth-header">
+      <h1 class="auth-title">Get Started</h1>
+      <p class="auth-sub">Create your institution account in seconds.</p>
+    </div>
+
+    <form method="post" id="signupForm">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label class="form-label">Institution Name</label>
+        <div class="input-wrapper">
+          <span class="input-icon">🏫</span>
+          <input type="text" name="institution" class="form-control has-icon" placeholder="e.g. Lincoln High School"
+            required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Admin Username</label>
+        <div class="input-wrapper">
+          <span class="input-icon">👤</span>
+          <input type="text" name="username" class="form-control has-icon" placeholder="admin_user" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <div class="input-wrapper">
+          <span class="input-icon">📧</span>
+          <input type="email" name="email" class="form-control has-icon" placeholder="admin@school.edu" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <div class="input-wrapper">
+          <span class="input-icon">🔒</span>
+          <input type="password" name="password" class="form-control has-icon" placeholder="Create a strong password"
+            required>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-auth">Create Account</button>
+    </form>
+
+    <div class="auth-footer">
+      Already registered? <a href="{% url 'login' %}">Sign in instead</a>
+
+      {% if user.is_authenticated %}
+      <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--clr-border); text-align: center;">
+        <p style="font-size: 0.85rem; color: var(--clr-text-muted); margin-bottom: 0.75rem;">
+          Currently logged in as <strong>{{ user.username }}</strong>
+        </p>
+        <p style="font-size: 0.8rem; color: var(--clr-text-muted); margin-bottom: 0.75rem;">
+          To register a new institution, please logout first
+        </p>
+        <a href="/logout/" class="btn" 
+           style="background: var(--clr-error); color: white; padding: 0.5rem 1rem; border-radius: 8px; text-decoration: none; font-size: 0.85rem; font-weight: 500; display: inline-block;">
+          🚪 Logout & Register New Institution
+        </a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'js/alerts.js' %}"></script>
+{% if error %}
+<script>showErrorAlert("{{ error }}");</script>
+{% endif %}
+
+<script>
+  document.getElementById('signupForm').addEventListener('submit', function (e) {
+    const btn = this.querySelector('.btn-auth');
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Creating...';
+    btn.disabled = true;
+  });
+</script>
+
+{% endblock %}

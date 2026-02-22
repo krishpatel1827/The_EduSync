@@ -1,0 +1,26 @@
+# Core Django
+Django>=4.2,<7.0
+asgiref>=3.7.0
+sqlparse>=0.4.0
+tzdata>=2023.3
+
+# REST API
+djangorestframework>=3.14.0
+djangorestframework-simplejwt>=5.3.0
+PyJWT>=2.8.0
+
+# Production dependencies
+gunicorn>=21.2.0
+whitenoise>=6.6.0
+dj-database-url>=2.1.0
+psycopg2-binary>=2.9.9
+python-dotenv>=1.0.0
+
+# Excel support
+openpyxl>=3.1.0
+
+# PDF support
+reportlab>=4.0.0
+
+# Image handling (required by Django ImageField)
+Pillow>=10.0.0

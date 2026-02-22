@@ -1,0 +1,527 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+    /* ═══ HERO SECTION ═══ */
+    .hero {
+        position: relative;
+        min-height: 90vh;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        padding-top: 4rem;
+        z-index: 1;
+        isolation: isolate;
+    }
+
+    /* Animated Gradient Blobs */
+    .hero-blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        opacity: 0.25;
+        animation: float 10s infinite ease-in-out;
+        z-index: -1;
+    }
+
+    .blob-1 {
+        width: 500px;
+        height: 500px;
+        background: var(--clr-accent);
+        top: -10%;
+        right: -10%;
+        animation-delay: 0s;
+    }
+
+    .blob-2 {
+        width: 400px;
+        height: 400px;
+        background: var(--clr-success);
+        bottom: -10%;
+        left: -5%;
+        animation-delay: 2s;
+    }
+
+    .blob-3 {
+        width: 300px;
+        height: 300px;
+        background: var(--clr-warning);
+        top: 40%;
+        left: 30%;
+        opacity: 0.2;
+        animation-delay: 4s;
+    }
+
+    @keyframes float {
+
+        0%,
+        100% {
+            transform: translate(0, 0) scale(1);
+        }
+
+        33% {
+            transform: translate(30px, -50px) scale(1.1);
+        }
+
+        66% {
+            transform: translate(-20px, 20px) scale(0.9);
+        }
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 10;
+        max-width: 900px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        background: var(--clr-surface);
+        border: 1px solid var(--clr-border);
+        border-radius: 50px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--clr-text-muted);
+        box-shadow: var(--shadow-sm);
+        margin-bottom: 2rem;
+        backdrop-filter: blur(10px);
+    }
+
+    .hero-badge span {
+        color: var(--clr-accent);
+    }
+
+    .hero-title {
+        font-family: var(--font-head);
+        font-weight: 700;
+        font-size: clamp(3rem, 6vw, 5rem);
+        line-height: 1.1;
+        letter-spacing: -2px;
+        margin-bottom: 1.5rem;
+        color: var(--clr-text);
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .hero-sub {
+        font-size: 1.125rem;
+        color: var(--clr-text);
+        line-height: 1.7;
+        max-width: 600px;
+        margin: 0 auto 2.5rem;
+        opacity: 0.8;
+    }
+
+    .btn-hero {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 1rem 2.5rem;
+        background: var(--clr-accent);
+        color: white;
+        font-weight: 600;
+        font-size: 1.05rem;
+        border-radius: 50px;
+        text-decoration: none;
+        box-shadow: var(--shadow-glow);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .btn-hero:hover {
+        background: var(--clr-accent-hover);
+        transform: translateY(-4px);
+        box-shadow: 0 20px 25px -5px rgba(99, 102, 241, 0.4);
+        color: white;
+    }
+
+    /* ═══ STATS ═══ */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+        margin-top: 4rem;
+        padding: 2rem;
+        background: var(--clr-surface);
+        border: 1px solid var(--clr-border);
+        border-radius: 24px;
+        box-shadow: var(--shadow-lg);
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .stat-item {
+        text-align: center;
+    }
+
+    .stat-num {
+        font-family: var(--font-head);
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--clr-text);
+        line-height: 1;
+        margin-bottom: 0.25rem;
+    }
+
+    .stat-label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--clr-text-muted);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    /* ═══ SECTIONS ═══ */
+    .section-padding {
+        padding: 8rem 0;
+    }
+
+    .section-header {
+        text-align: center;
+        max-width: 700px;
+        margin: 0 auto 4rem;
+    }
+
+    .section-tag {
+        color: var(--clr-accent);
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 2px;
+        margin-bottom: 1rem;
+        display: block;
+    }
+
+    .section-title {
+        font-family: var(--font-head);
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 700;
+        line-height: 1.1;
+        margin-bottom: 1rem;
+        letter-spacing: -1px;
+    }
+
+    /* ═══ CARDS ═══ */
+    .feature-card {
+        background: var(--clr-surface);
+        border: 1px solid var(--clr-border);
+        padding: 2.5rem;
+        border-radius: 24px;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+        height: 100%;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--shadow-lg);
+        border-color: var(--clr-accent);
+    }
+
+    .feature-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.75rem;
+        margin-bottom: 1.5rem;
+        background: var(--clr-surface-alt);
+        transition: transform 0.4s ease;
+    }
+
+    .feature-card:hover .feature-icon {
+        transform: scale(1.1) rotate(5deg);
+        background: var(--clr-accent);
+        color: white;
+    }
+
+    /* ═══ FAQ ═══ */
+    .faq-item {
+        background: var(--clr-surface);
+        border: 1px solid var(--clr-border);
+        border-radius: 16px;
+        margin-bottom: 1rem;
+        overflow: hidden;
+        transition: all 0.3s;
+    }
+
+    .faq-btn {
+        width: 100%;
+        text-align: left;
+        padding: 1.5rem;
+        background: none;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-weight: 600;
+        font-size: 1.05rem;
+        color: var(--clr-text);
+        cursor: pointer;
+    }
+
+    .faq-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s ease;
+        padding: 0 1.5rem;
+    }
+
+    .faq-item.active {
+        border-color: var(--clr-accent);
+    }
+
+    .faq-item.active .faq-content {
+        padding-bottom: 1.5rem;
+    }
+
+    /* ═══ CTA ═══ */
+    .cta-box {
+        background: linear-gradient(135deg, var(--clr-accent) 0%, var(--clr-accent-hover) 100%);
+        color: white;
+        border-radius: 32px;
+        padding: 5rem 2rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid var(--clr-border);
+        box-shadow: var(--shadow-xl);
+    }
+
+    .cta-box h2 {
+        font-family: var(--font-head);
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        margin-bottom: 1.5rem;
+        font-weight: 700;
+        color: white;
+        text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .cta-blob {
+        position: absolute;
+        width: 600px;
+        height: 600px;
+        background: var(--clr-accent);
+        filter: blur(120px);
+        opacity: 0.15;
+        top: -50%;
+        left: 50%;
+        transform: translateX(-50%);
+        pointer-events: none;
+    }
+
+    .cta-paragraph {
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+        opacity: 0.95;
+        color: white;
+    }
+
+    .cta-button {
+        font-weight: 700;
+        background: white !important;
+        color: var(--clr-accent) !important;
+    }
+
+    @media (max-width: 768px) {
+        .stats-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+    }
+</style>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-blob blob-1"></div>
+    <div class="hero-blob blob-2"></div>
+    <div class="hero-blob blob-3"></div>
+
+    <div class="container hero-content">
+        <div class="hero-badge">
+            <span>✨</span> New: AI Timetable Generator
+        </div>
+
+        <h1 class="hero-title">
+            The Operating System for<br>Modern Education
+        </h1>
+
+        <p class="hero-sub">
+            EduSync replaces scattered spreadsheets with a single, beautiful dashboard.
+            Manage students, faculty, attendance, and reporting — effortlessly.
+        </p>
+
+        <a href="{% url 'signup' %}" class="btn-hero">
+            Get Started for Free <span style="font-size: 1.2rem">→</span>
+        </a>
+
+        <!-- Stats Floating Card -->
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-num" style="color: var(--clr-accent);">150+</div>
+                <div class="stat-label">Institutions</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num" style="color: var(--clr-success);">10k+</div>
+                <div class="stat-label">Students</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num" style="color: var(--clr-warning);">99%</div>
+                <div class="stat-label">Efficiency</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section-padding" id="features">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-tag">Powerful Features</span>
+            <h2 class="section-title">Everything you need to run your institution</h2>
+            <p style="color: var(--clr-text-muted); font-size: 1.1rem;">Powerful tools for admins, teachers, and
+                students.</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- 1 -->
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-card">
+                    <div class="feature-icon">👨‍🏫</div>
+                    <h5 style="font-weight: 700; margin-bottom: 0.5rem;">Faculty Management</h5>
+                    <p style="color: var(--clr-text-muted); font-size: 0.9rem;">
+                        Track schedules, workload, and performance reviews in one central hub.
+                    </p>
+                </div>
+            </div>
+            <!-- 2 -->
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-card">
+                    <div class="feature-icon">🎓</div>
+                    <h5 style="font-weight: 700; margin-bottom: 0.5rem;">Student Records</h5>
+                    <p style="color: var(--clr-text-muted); font-size: 0.9rem;">
+                        Digital profiles, grades, attendance, and behavior reports accessable instantly.
+                    </p>
+                </div>
+            </div>
+            <!-- 3 -->
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h5 style="font-weight: 700; margin-bottom: 0.5rem;">Smart Analytics</h5>
+                    <p style="color: var(--clr-text-muted); font-size: 0.9rem;">
+                        Visualise growth, attendance trends, and financial health with one click.
+                    </p>
+                </div>
+            </div>
+            <!-- 4 -->
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-card">
+                    <div class="feature-icon">🔔</div>
+                    <h5 style="font-weight: 700; margin-bottom: 0.5rem;">Real-time Alerts</h5>
+                    <p style="color: var(--clr-text-muted); font-size: 0.9rem;">
+                        Notify parents and students about exams, holidays, and incidents instantly.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ -->
+<section class="section-padding" style="background: var(--clr-surface-alt);" id="faq">
+    <div class="container" style="max-width: 800px;">
+        <div class="section-header">
+            <span class="section-tag">FAQ</span>
+            <h2 class="section-title">Common Questions</h2>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-btn" onclick="toggleFaq(this)">
+                Is EduSync free to try?
+                <span>+</span>
+            </button>
+            <div class="faq-content">
+                <div style="padding-bottom: 1.5rem; color: var(--clr-text-muted);">
+                    Yes! You can get started with our free tier which includes all basic features for up to 50 students.
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-btn" onclick="toggleFaq(this)">
+                Can I migrate my data?
+                <span>+</span>
+            </button>
+            <div class="faq-content">
+                <div style="padding-bottom: 1.5rem; color: var(--clr-text-muted);">
+                    Absolutely. We offer bulk import tools for CSV and Excel files to make migration painless.
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-btn" onclick="toggleFaq(this)">
+                Is my data secure?
+                <span>+</span>
+            </button>
+            <div class="faq-content">
+                <div style="padding-bottom: 1.5rem; color: var(--clr-text-muted);">
+                    We use enterprise-grade encryption and daily backups to ensure your institution's data is never lost
+                    or compromised.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="section-padding" id="About Us" style="padding-top: 2rem;">
+    <div class="container">
+        <div class="cta-box">
+            <div class="cta-blob"></div>
+            <div style="position: relative; z-index: 5;">
+                <h2>Start your transformation today.</h2>
+                <p class="cta-paragraph">
+                    Join over 150 institutions modernising their campus with EduSync.
+                </p>
+                <a href="{% url 'signup' %}" class="btn-hero cta-button">
+                    Create Free Account
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    function toggleFaq(btn) {
+        const item = btn.parentElement;
+        const isActive = item.classList.contains('active');
+
+        // Close all
+        document.querySelectorAll('.faq-item').forEach(i => {
+            i.classList.remove('active');
+            i.querySelector('.faq-content').style.maxHeight = null;
+            i.querySelector('.faq-btn span').textContent = '+';
+        });
+
+        if (!isActive) {
+            item.classList.add('active');
+            item.querySelector('.faq-content').style.maxHeight = item.querySelector('.faq-content').scrollHeight + "px";
+            btn.querySelector('span').textContent = '-';
+        }
+    }
+</script>
+
+{% endblock %}
