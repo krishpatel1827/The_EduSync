@@ -4,35 +4,6 @@ Use the resources below to effectively showcase **EduSync** on LinkedIn. This to
 
 ---
 
-## 📝 Part 1: LinkedIn Post Draft
-*Copy and paste this as your post text. Don't forget to attach a screen recording or a carousel of screenshots!*
-
-**Headline:** 🎓 Redefining Campus Management: Introducing EduSync 2.0!
-
-I’m thrilled to share my Semester 3 project: **EduSync**, a high-fidelity Campus Management & Timetable Automation system built with Django. 🚀
-
-Managing an educational institution is complex, but the software shouldn't be. EduSync bridges the gap with a "Premium-First" approach—combining industrial-grade backend logic with a modern, glassmorphic aesthetic.
-
-**✨ Key Highlights:**
-*   🗓️ **Automated Timetable Engine**: One-click, conflict-free scheduling for rooms, teachers, and students.
-*   📊 **Academic Intelligence**: Automated marksheet generation with a 10.0 GPA scaling system and attendance analytics.
-*   🏛️ **Multi-Tier Portals**: Unified login experience with optimized dashboards for Admins, Teachers, and Students.
-*   🎨 **Premium UX**: A responsive, buttery-smooth interface featuring dark mode, glassmorphism, and custom micro-animations.
-*   🔐 **Enterprise Security**: Role-based access control (RBAC) and JWT-ready APIs for mobile integration.
-
-**🛠️ The Tech Stack:**
-*   **Backend**: Python / Django / PostgreSQL
-*   **APIs**: Django REST Framework / SimpleJWT
-*   **Frontend**: HTML5 / Vanilla CSS3 / JavaScript (ES6+) / Bootstrap 5
-*   **Reporting**: ReportLab (PDF) / OpenPyXL (Excel)
-
-This project taught me the importance of scalable architecture and user-centric design. Big thanks to my teammates for the incredible collaboration! 🤝
-
-Check out the full repository here: [Insert Your GitHub Link]
-
-#Django #Python #WebDevelopment #EdTech #FullStack #SoftwareEngineering #ProjectShowcase #EduSync
-
----
 
 ## 📖 Part 2: Project Narrative (The "About" Section)
 *Use this for the "Description" field on your LinkedIn Project or as a PDF attachment.*
