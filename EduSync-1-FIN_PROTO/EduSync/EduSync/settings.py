@@ -29,13 +29,15 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-)6)aqhifp6j-_wcax$*4+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'True').lower() in ('true', '1', 'yes')
 
-# Check if running on Render
-IS_RENDER = os.environ.get('RENDER', 'False').lower() in ('true', '1', 'yes')
+# Check if running in a cloud environment
+IS_CLOUD = os.environ.get('CLOUD_ENVIRONMENT', 'False').lower() in ('true', '1', 'yes')
 
-ALLOWED_HOSTS = ['*'] if DEBUG else ['localhost', '127.0.0.1', '.onrender.com']
-RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
-if RENDER_EXTERNAL_HOSTNAME:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+# Generic host detection
+EXTERNAL_HOSTNAME = os.environ.get('EXTERNAL_HOSTNAME')
+ALLOWED_HOSTS = ['*'] if DEBUG else ['localhost', '127.0.0.1']
+if EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(EXTERNAL_HOSTNAME)
+    ALLOWED_HOSTS.append(f".{EXTERNAL_HOSTNAME.split('.')[-2]}.{EXTERNAL_HOSTNAME.split('.')[-1]}")
 
 # CSRF Trusted Origins
 CSRF_TRUSTED_ORIGINS = [
@@ -43,13 +45,12 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8000',
     'http://127.0.0.1',
     'http://localhost',
-    'https://*.onrender.com',
 ]
-if RENDER_EXTERNAL_HOSTNAME:
-    CSRF_TRUSTED_ORIGINS.append(f'https://{RENDER_EXTERNAL_HOSTNAME}')
+if EXTERNAL_HOSTNAME:
+    CSRF_TRUSTED_ORIGINS.append(f'https://{EXTERNAL_HOSTNAME}')
 
 # Security settings - different for production vs development
-if IS_RENDER:
+if IS_CLOUD:
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE = True
     SECURE_SSL_REDIRECT = True
