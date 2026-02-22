@@ -2,7 +2,7 @@ services:
   - type: web
     name: edusync
     runtime: python
-    rootDirectory: EduSync-1-FIN_PROTO/EduSync
+    rootDir: EduSync-1-FIN_PROTO/EduSync
     buildCommand: "bash build.sh"
     startCommand: "gunicorn EduSync.wsgi:application"
     envVars:
